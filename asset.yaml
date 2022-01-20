@@ -1,0 +1,573 @@
+# BUCKET - User
+apiVersion: bucket/v1
+kind: Schema
+metadata:
+  name: spica-rentacar-asset-user-bucket
+spec:
+  title: User
+  description: Rent a car
+  icon: toys
+  primary: name
+  readOnly: false
+  history: false
+  properties:
+    name:
+      type: string
+      title: name
+      description: Description of the name input
+      options:
+        position: bottom
+    surname:
+      type: string
+      title: surname
+      description: Description of the surname input
+      options:
+        position: bottom
+    email:
+      type: string
+      title: email
+      description: Description of the email input
+      options:
+        position: bottom
+    phone:
+      type: string
+      title: phone
+      description: Description of the phone input
+      options:
+        position: bottom
+    birthday:
+      type: date
+      title: birthday
+      description: Description of the birthday input
+      options:
+        position: bottom
+    identity:
+      type: string
+      title: identity
+      description: Description of the identity input
+      options:
+        position: bottom
+    passport:
+      type: string
+      title: passport
+      description: Description of the passport input
+      options:
+        position: bottom
+  acl:
+    write: true==true
+    read: true==true
+  order: 11
+---
+# BUCKET - Office
+apiVersion: bucket/v1
+kind: Schema
+metadata:
+  name: spica-rentacar-asset-office-bucket
+spec:
+  title: Office
+  description: Rent a car
+  icon: toys
+  primary: name
+  readOnly: false
+  history: false
+  properties:
+    name:
+      type: string
+      title: name
+      description: Description of the name input
+      options:
+        position: bottom
+    location:
+      type: location
+      title: location
+      description: Description of the location input
+      options:
+        position: bottom
+      locationType: Point
+    phone:
+      type: string
+      title: phone
+      description: Description of the phone input
+      options:
+        position: bottom
+    working_hours:
+      type: object
+      title: working_hours
+      description: Description of the working_hours input
+      options:
+        position: bottom
+      properties:
+        open:
+          type: string
+          title: open
+          description: Description of the open input
+          options:
+            position: bottom
+        close:
+          type: string
+          title: close
+          description: Description of the close input
+          options:
+            position: bottom
+    cars:
+      type: relation
+      title: cars
+      description: Description of the cars input
+      options:
+        position: bottom
+      relationType: onetomany
+      dependent: false
+      bucket:
+        resourceFieldRef:
+          schemaName: spica-rentacar-asset-cars-bucket
+  acl:
+    write: true==true
+    read: true==true
+  order: 12
+---
+# BUCKET - Category
+apiVersion: bucket/v1
+kind: Schema
+metadata:
+  name: spica-rentacar-asset-category-bucket
+spec:
+  title: Category
+  description: Rent a car
+  icon: toys
+  primary: name
+  readOnly: false
+  history: false
+  properties:
+    name:
+      type: string
+      title: name
+      description: Description of the name input
+      options:
+        position: bottom
+    image:
+      type: storage
+      title: image
+      description: Description of the image input
+      options:
+        position: bottom
+  acl:
+    write: true==true
+    read: true==true
+  order: 13
+---
+# BUCKET - Cars
+apiVersion: bucket/v1
+kind: Schema
+metadata:
+  name: spica-rentacar-asset-cars-bucket
+spec:
+  title: Cars
+  description: Rent a car
+  icon: toys
+  primary: name
+  readOnly: false
+  history: false
+  properties:
+    name:
+      type: string
+      title: name
+      description: Description of the name input
+      options:
+        position: bottom
+    images:
+      type: array
+      title: images
+      description: Description of the images input
+      options:
+        position: bottom
+      items:
+        title: Title of the items
+        type: storage
+    category:
+      type: relation
+      title: category
+      description: Description of the category input
+      options:
+        position: bottom
+      relationType: onetoone
+      dependent: false
+      bucket:
+        resourceFieldRef:
+          schemaName: spica-rentacar-asset-category-bucket
+    features:
+      type: array
+      title: features
+      description: Description of the features input
+      options:
+        position: bottom
+      items:
+        title: Title of the items
+        type: string
+    terms:
+      type: array
+      title: terms
+      description: Description of the terms input
+      options:
+        position: bottom
+      items:
+        title: Title of the items
+        type: string
+    driver_age:
+      type: number
+      title: driver_age
+      description: Description of the driver_age input
+      options:
+        position: bottom
+      minimum: 16
+    price:
+      type: number
+      title: price
+      description: Description of the price input
+      options:
+        position: bottom
+      minimum: 0
+  acl:
+    write: true==true
+    read: true==true
+  order: 14
+---
+# BUCKET - Rent a Car
+apiVersion: bucket/v1
+kind: Schema
+metadata:
+  name: spica-rentacar-asset-rent-a-car-bucket
+spec:
+  title: Rent a Car
+  description: Rent a car
+  icon: toys
+  primary: price
+  readOnly: false
+  history: false
+  properties:
+    price:
+      type: number
+      title: price
+      description: Description of the price input
+      options:
+        position: bottom
+    car:
+      type: relation
+      title: car
+      description: Description of the car input
+      options:
+        position: bottom
+      relationType: onetoone
+      dependent: false
+      primary: name
+      bucket:
+        resourceFieldRef:
+          schemaName: spica-rentacar-asset-cars-bucket
+    user:
+      type: relation
+      title: user
+      description: Description of the user input
+      options:
+        position: bottom
+      relationType: onetoone
+      dependent: false
+      primary: name
+      bucket:
+        resourceFieldRef:
+          schemaName: spica-rentacar-asset-user-bucket
+    start:
+      type: date
+      title: start
+      description: Description of the start input
+      options:
+        position: bottom
+    end:
+      type: date
+      title: end
+      description: Description of the end input
+      options:
+        position: bottom
+    office_to_take:
+      type: relation
+      title: office_to_take
+      description: Description of the office_to_take input
+      options:
+        position: bottom
+      relationType: onetoone
+      dependent: false
+      primary: name
+      bucket:
+        resourceFieldRef:
+          schemaName: spica-rentacar-asset-office-bucket
+    office_to_be_given:
+      type: relation
+      title: office_to_be_given
+      description: Description of the office_to_be_given input
+      options:
+        position: bottom
+      relationType: onetoone
+      dependent: false
+      primary: name
+      bucket:
+        resourceFieldRef:
+          schemaName: spica-rentacar-asset-office-bucket
+    packets:
+      type: relation
+      title: packets
+      description: Description of the packets input
+      options:
+        position: bottom
+      relationType: onetomany
+      dependent: false
+      primary: name
+      bucket:
+        resourceFieldRef:
+          schemaName: spica-rentacar-asset-car-packet-bucket
+    additional_products:
+      type: relation
+      title: additional_products
+      description: Description of the additional_products input
+      options:
+        position: bottom
+      relationType: onetomany
+      dependent: false
+      primary: name
+      bucket:
+        resourceFieldRef:
+          schemaName: spica-rentacar-asset-additional-products-bucket
+    name:
+      type: string
+      title: name
+      description: Description of the name input
+      options:
+        position: bottom
+    surname:
+      type: string
+      title: surname
+      description: Description of the surname input
+      options:
+        position: bottom
+    passport:
+      type: string
+      title: passport
+      description: Description of the passport input
+      options:
+        position: bottom
+    birthday:
+      type: date
+      title: birthday
+      description: Description of the birthday input
+      options:
+        position: bottom
+  acl:
+    write: true==true
+    read: true==true
+  order: 15
+---
+# BUCKET - Car Packet
+apiVersion: bucket/v1
+kind: Schema
+metadata:
+  name: spica-rentacar-asset-car-packet-bucket
+spec:
+  title: Car Packet
+  description: Rent a car
+  icon: toys
+  primary: name
+  readOnly: false
+  history: false
+  properties:
+    name:
+      type: string
+      title: name
+      description: Description of the name input
+      options:
+        position: bottom
+    price:
+      type: number
+      title: price
+      description: Description of the price input
+      options:
+        position: bottom
+      minimum: 0
+    features:
+      type: array
+      title: features
+      description: Description of the features input
+      options:
+        position: bottom
+      items:
+        title: Title of the items
+        type: string
+  acl:
+    write: true==true
+    read: true==true
+  order: 16
+---
+# BUCKET - Additional Products
+apiVersion: bucket/v1
+kind: Schema
+metadata:
+  name: spica-rentacar-asset-additional-products-bucket
+spec:
+  title: Additional Products
+  description: Rent a car
+  icon: toys
+  primary: name
+  readOnly: false
+  history: false
+  properties:
+    name:
+      type: string
+      title: name
+      description: Description of the name input
+      options:
+        position: bottom
+    price:
+      type: number
+      title: price
+      description: Description of the price input
+      options:
+        position: bottom
+      minimum: 0
+    description:
+      type: richtext
+      title: description
+      description: Description of the description input
+      options:
+        position: bottom
+  acl:
+    write: true==true
+    read: true==true
+  order: 17
+---
+# BUCKET - Contact
+apiVersion: bucket/v1
+kind: Schema
+metadata:
+  name: spica-rentacar-asset-contact-bucket
+spec:
+  title: Contact
+  description: Rent A Car
+  icon: toys
+  primary: name
+  readOnly: false
+  history: false
+  properties:
+    name:
+      type: string
+      title: name
+      description: Description of the name input
+      options:
+        position: bottom
+    surname:
+      type: string
+      title: surname
+      description: Description of the surname input
+      options:
+        position: bottom
+    mail:
+      type: string
+      title: mail
+      description: Description of the mail input
+      options:
+        position: bottom
+    message:
+      type: textarea
+      title: message
+      description: Description of the message input
+      options:
+        position: bottom
+  acl:
+    write: true==true
+    read: true==true
+  order: 18
+---
+# BUCKET - Rent a Car Site Items
+apiVersion: bucket/v1
+kind: Schema
+metadata:
+  name: spica-rentacar-asset-rent-a-car-site-items-bucket
+spec:
+  title: Rent a Car Site Items
+  description: Rent a car
+  icon: toys
+  primary: discount_code
+  readOnly: false
+  history: false
+  properties:
+    logo:
+      type: storage
+      title: logo
+      description: Description of the logo input
+      options:
+        position: bottom
+    social_media:
+      type: array
+      title: social_media
+      description: Description of the social_media input
+      options:
+        position: bottom
+      items:
+        title: Title of the items
+        type: object
+        properties:
+          name:
+            type: string
+            title: name
+            description: Description of the name input
+            options:
+              position: bottom
+          link:
+            type: string
+            title: link
+            description: Description of the link input
+            options:
+              position: bottom
+    discount_code:
+      type: string
+      title: discount_code
+      description: Description of the discount_code input
+      options:
+        position: bottom
+  acl:
+    write: true==true
+    read: true==true
+  order: 19
+---
+# FUNCTION - Rent-A-Car Auth
+apiVersion: function/v1
+kind: Function
+metadata:
+  name: spica-rentacar-asset-rent-a-car-auth-function
+spec:
+  language: javascript
+  timeout: 31.9
+  environment:
+    - name: USER_BUCKET_ID
+      value: 61bc95ab1fcf06002dc71fc3
+    - name: SECRET_API_KEY
+      value: fskk1akvi1elv0
+  dependency:
+    - name: "@spica-devkit/bucket"
+      version: ^0.9.14
+    - name: "@spica-devkit/identity"
+      version: ^0.9.14
+  title: Rent-A-Car Auth
+  code: ./function/spica-rentacar-asset-rent-a-car-auth-function.js
+  runtime:
+    name: Node
+    language: Javascript
+---
+# TRIGGER - register
+apiVersion: function/v1
+kind: Trigger
+metadata:
+  name: register
+spec:
+  type: http
+  active: true
+  name: register
+  func: spica-rentacar-asset-rent-a-car-auth-function
+  httpOptions:
+    method: Post
+    path: /register
