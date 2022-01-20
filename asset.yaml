@@ -1,3 +1,15 @@
+# API KEY
+apiVersion: passport/v1
+kind: ApiKey
+metadata:
+  name: rentacar-asset-api-key
+spec:
+  name: Secret Api Key For Rent a Car
+  policies:
+    - BucketFullAccess
+    - FunctionFullAccess
+    - IdentityFullAccess
+---
 # BUCKET - User
 apiVersion: bucket/v1
 kind: Schema
@@ -544,9 +556,13 @@ spec:
   timeout: 31.9
   environment:
     - name: USER_BUCKET_ID
-      value: 61bc95ab1fcf06002dc71fc3
+      valueFrom:
+        resourceFieldRef:
+          schemaName: spica-rentacar-asset-user-bucket
     - name: SECRET_API_KEY
-      value: fskk1akvi1elv0
+      valueFrom:
+        resourceFieldRef:
+          apiKeyName: rentacar-asset-api-key
   dependency:
     - name: "@spica-devkit/bucket"
       version: ^0.9.14
